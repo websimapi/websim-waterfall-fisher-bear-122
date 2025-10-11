@@ -53,7 +53,7 @@ function createVoxelLog() {
         }
     });
 
-    logGroup.rotation.z = Math.PI / 2;
+    logGroup.rotation.y = Math.PI / 2;
     logGroup.position.set(0, 2.7, 1);
     
     return logGroup;
