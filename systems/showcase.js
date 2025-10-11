@@ -69,7 +69,7 @@ export function createOrUpdateShowcase() {
     showcaseBear.userData.isShowcase = true;
     showcaseBear.userData.bearType = playerProgress.selectedBear;
     showcaseBear.userData.cosmeticId = playerProgress.selectedCosmetic || 'none';
-    showcaseBear.position.set(0, 4.65, 0.8);
+    showcaseBear.position.set(0, 4.75, 0.8);
     showcaseBear.rotation.x = 0; // keep facing direction from createBear()
     showcaseBear.rotation.z = 0;
     showcaseBear.rotation.y = 0; // face forward toward the log/camera
@@ -184,11 +184,11 @@ export function walkInShowcaseBear(fromRight, done) {
     if (showcaseBear) {
         const fromRightResolved = typeof fromRight === 'boolean' ? fromRight : Math.random() < 0.5;
         showcaseBear.userData.fromRight = fromRightResolved;
-        showcaseBear.position.set(fromRightResolved ? 12 : -12, 4.65, 0.8);
+        showcaseBear.position.set(fromRightResolved ? 12 : -12, 4.75, 0.8);
         showcaseBear.visible = true;
         // face toward the log along X while walking in
         showcaseBear.rotation.y = fromRightResolved ? -Math.PI/2 : Math.PI/2;
-        const startX = showcaseBear.position.x, endX = 0, baseY = 4.65;
+        const startX = showcaseBear.position.x, endX = 0, baseY = 4.75;
         const duration = 2400;
         const walkTw = new TWEEN.Tween(showcaseBear.position)
             .to({ x: endX }, duration)
@@ -214,7 +214,7 @@ export function walkInShowcaseBear(fromRight, done) {
 
 export function waddleOutShowcaseBear(toRight = true, done) {
     if (!showcaseBear) return done?.();
-    const baseY = 4.65, targetX = toRight ? 12 : -12, faceY = toRight ? Math.PI / 2 : -Math.PI / 2;
+    const baseY = 4.75, targetX = toRight ? 12 : -12, faceY = toRight ? Math.PI / 2 : -Math.PI / 2;
     const durTurn = 800, easeRot = TWEEN.Easing?.Cubic?.InOut || ((k)=>k), easeWob = TWEEN.Easing?.Sine?.InOut || ((k)=>k);
     const wob = { t: 0 };
     new TWEEN.Tween(wob).to({ t: 1 }, durTurn).easing(easeWob)

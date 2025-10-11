@@ -29,11 +29,11 @@ function createAxisLabel(text, position, color = 'black', size = 64) {
 
     const texture = new THREE.CanvasTexture(canvas);
     texture.minFilter = THREE.LinearFilter;
-    
+
     const spriteMaterial = new THREE.SpriteMaterial({ map: texture, transparent: true });
     const sprite = new THREE.Sprite(spriteMaterial);
     sprite.position.copy(position);
-    
+
     sprite.scale.set(canvas.width * 0.01, canvas.height * 0.01, 1.0);
 
     return sprite;
@@ -98,7 +98,7 @@ export function toggleDevTools(controls) {
 export function resetDevTools(controls) {
     const devConsoleButton = document.getElementById('dev-console-button');
     if (!devConsoleButton) return;
-    
+
     devConsoleButton.classList.toggle('hidden');
     if (!devConsoleButton.classList.contains('hidden')) {
          if (controls) controls.enabled = false;

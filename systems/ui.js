@@ -81,12 +81,12 @@ export function showStart(isFirstLoad = false) {
     document.getElementById('game-over-screen').classList.add('hidden');
     document.getElementById('score-container').classList.add('hidden');
     document.getElementById('streak-container').classList.add('hidden');
-    
+
     const quick = document.getElementById('quick-choices');
     const unlocks = document.getElementById('unlocks-container');
     if (quick) quick.classList.remove('hidden');
     if (unlocks) unlocks.classList.add('hidden');
-    
+
     const logo = document.getElementById('game-logo');
     if (logo) {
         if (isFirstLoad) {
@@ -119,7 +119,7 @@ function createUnlockBox(item, type, isUnlocked, isSelected, clickHandler) {
     img.src = item.asset;
     img.alt = item.name;
     box.appendChild(img);
-    
+
     const span = document.createElement('span');
     span.textContent = item.name;
     box.appendChild(span);
@@ -141,7 +141,7 @@ function createUnlockBox(item, type, isUnlocked, isSelected, clickHandler) {
         unlockText.style.opacity = '0.8';
         box.appendChild(unlockText);
     }
-    
+
     return box;
 }
 
@@ -149,7 +149,7 @@ export function populateUnlocks(progress, clickHandler) {
     const bearContainer = document.getElementById('bear-unlocks');
     const fishContainer = document.getElementById('fish-unlocks');
     const cosmeticContainer = document.getElementById('cosmetic-unlocks');
-    
+
     bearContainer.innerHTML = '';
     fishContainer.innerHTML = '';
     cosmeticContainer.innerHTML = '';
