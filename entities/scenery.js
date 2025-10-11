@@ -19,6 +19,13 @@ function createVoxelLog() {
     const barkMat2 = new THREE.MeshLambertMaterial({ color: 0x6b442a }); // slightly lighter
     const woodMat = new THREE.MeshLambertMaterial({ color: 0x967969 }); // lighter for ends
 
+    // Apply polygon offset to prevent z-fighting between voxels
+    [barkMat1, barkMat2, woodMat].forEach(mat => {
+        mat.polygonOffset = true;
+        mat.polygonOffsetFactor = 1;
+        mat.polygonOffsetUnits = 1;
+    });
+
     const numSlices = Math.floor(length / voxelSize);
 
     for (let i = 0; i < numSlices; i++) {

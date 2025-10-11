@@ -13,7 +13,7 @@ export let glSupported = true;
 
 export const renderer = (() => {
     try {
-        return new THREE.WebGLRenderer({ antialias: true, alpha: false, powerPreference: 'high-performance', failIfMajorPerformanceCaveat: false });
+        return new THREE.WebGLRenderer({ antialias: true, alpha: false, powerPreference: 'high-performance', failIfMajorPerformanceCaveat: false, logarithmicDepthBuffer: true });
     } catch (e1) {
         console.warn('WebGLRenderer failed, falling back to WebGL1Renderer', e1);
         try {
