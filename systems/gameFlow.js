@@ -101,7 +101,7 @@ export function startGameWithTurnaround() {
     const proceed = () => {
         if (showcaseBear && showcaseBear.visible) {
             showcaseBear.rotation.y = 0; // normalize facing before rotating to 180°
-            const baseY = 4.75, dur = 900; // Corrected from 4.65 to 4.75 to prevent clipping
+            const baseY = 4.85, dur = 900; // Corrected from 4.75 to 4.85 to prevent clipping
             const easeRot = TWEEN.Easing?.Cubic?.InOut || ((k)=>k);
             const easeWob = TWEEN.Easing?.Sine?.InOut || ((k)=>k);
             new TWEEN.Tween(showcaseBear.rotation).to({ y: Math.PI }, dur).easing(easeRot).start();

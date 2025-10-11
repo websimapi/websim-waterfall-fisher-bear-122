@@ -77,7 +77,7 @@ export function updateGame(dt = 1/60) {
         const dz = bear.position.z - lastBearZ; lastBearZ = bear.position.z;
         const log = scene.getObjectByName('log');
         if (log) {
-            log.rotation.x += -dz * 0.35; // slower roll
+            log.rotation.x += dz * 0.35; // slower roll, inverted direction
             const targetZ = THREE.MathUtils.clamp(bear.position.z + 0.2, BEAR_Z_MIN + 0.2, BEAR_Z_MAX + 0.2);
             log.position.z = THREE.MathUtils.lerp(log.position.z, targetZ, 0.05); // slower physical drift
         }

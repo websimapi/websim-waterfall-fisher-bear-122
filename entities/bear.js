@@ -69,7 +69,7 @@ export function createBear(type = 'splashy', cosmeticId = null) {
     rightHandAnchor.position.set(0, -armHeight/2, 0); rightArm.add(rightHandAnchor);
     rightArm.position.set(0.95, armY, armZ); rightArm.rotation.z = Math.PI/20; group.add(rightArm);
     
-    group.position.set(0, 4.75, 0.8); // Adjusted Y to be on top of the log.
+    group.position.set(0, 4.85, 0.8); // Adjusted Y to be on top of the log.
     group.rotation.y = Math.PI;
     group.userData.targetX = 0;
     group.userData.wobbleTimer = 0;
