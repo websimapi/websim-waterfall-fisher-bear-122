@@ -1,5 +1,9 @@
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { BufferGeometryUtils } from 'three/addons/utils/BufferGeometryUtils.js';
+
+// Add BufferGeometryUtils to global THREE scope for scenery.js
+THREE.BufferGeometryUtils = BufferGeometryUtils;
 
 export const scene = new THREE.Scene();
 scene.background = new THREE.Color(0x87ceeb);

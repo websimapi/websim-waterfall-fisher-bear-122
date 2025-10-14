@@ -15,37 +15,52 @@ function createVoxelLog() {
     const length = 9;
     const voxelSize = 0.25;
 
-    const barkMat1 = new THREE.MeshLambertMaterial({ color: 0x4a2d1e }); // darkBrownMat
-    const barkMat2 = new THREE.MeshLambertMaterial({ color: 0x6b442a }); // slightly lighter
-    const woodMat = new THREE.MeshLambertMaterial({ color: 0x967969 }); // lighter for ends
+    const barkMat1 = new THREE.MeshLambertMaterial({ color: 0x4a2d1e });
+    const barkMat2 = new THREE.MeshLambertMaterial({ color: 0x6b442a });
+    const woodMat = new THREE.MeshLambertMaterial({ color: 0x967969 });
 
-    // Apply polygon offset to prevent z-fighting between voxels
-    [barkMat1, barkMat2, woodMat].forEach(mat => {
-        mat.polygonOffset = true;
-        mat.polygonOffsetFactor = 1;
-        mat.polygonOffsetUnits = 1;
-    });
+    const materials = [barkMat1, barkMat2, woodMat];
+    const geometries = materials.map(() => []);
 
-    const numSlices = Math.floor(length / voxelSize);
+    const occupied = new Set();
+    const voxelGeo = new THREE.BoxGeometry(voxelSize, voxelSize, voxelSize);
 
+    function addVoxel(x, y, z, matIndex) {
+        const gridX = Math.round(x / voxelSize);
+        const gridY = Math.round(y / voxelSize);
+        const gridZ = Math.round(z / voxelSize);
+
+        const key = `${gridX},${gridY},${gridZ}`;
+        if (occupied.has(key)) return;
+
+        const dist = Math.sqrt(gridX * gridX + gridY * gridY) * voxelSize;
+        if (dist > radius + voxelSize * 0.5) return;
+
+        occupied.add(key);
+        const transform = new THREE.Matrix4().setPosition(
+            gridX * voxelSize,
+            gridY * voxelSize,
+            gridZ * voxelSize
+        );
+        geometries[matIndex].push(voxelGeo.clone().applyMatrix4(transform));
+    }
+
+    const numSlices = Math.ceil(length / voxelSize);
     for (let i = 0; i < numSlices; i++) {
         const z = -length / 2 + i * voxelSize;
-        const sliceRadius = radius * (0.9 + Math.random() * 0.2); // vary radius along length
+        const sliceRadius = radius * (0.9 + Math.random() * 0.2);
         const numVoxelsInSlice = Math.floor(2 * Math.PI * sliceRadius / voxelSize);
-        
+
         for (let j = 0; j < numVoxelsInSlice; j++) {
             const angle = (j / numVoxelsInSlice) * 2 * Math.PI;
             const r = sliceRadius * (0.95 + Math.random() * 0.1);
             const x = r * Math.cos(angle);
             const y = r * Math.sin(angle);
-
-            const mat = Math.random() > 0.3 ? barkMat1 : barkMat2;
-            const voxel = createVoxel(x, y, z, voxelSize, voxelSize, voxelSize, mat);
-            logGroup.add(voxel);
+            const matIndex = Math.random() > 0.3 ? 0 : 1;
+            addVoxel(x, y, z, matIndex);
         }
     }
-
-    // Add caps
+    
     const capPositions = [-length / 2, length / 2];
     capPositions.forEach(z => {
         const numCapVoxels = Math.floor(Math.PI * radius * radius / (voxelSize * voxelSize));
@@ -54,11 +69,21 @@ function createVoxelLog() {
             const angle = Math.random() * 2 * Math.PI;
             const x = r * Math.cos(angle);
             const y = r * Math.sin(angle);
-            const mat = r < radius * 0.7 ? woodMat : (Math.random() > 0.3 ? barkMat1 : barkMat2);
-            const voxel = createVoxel(x, y, z, voxelSize, voxelSize, voxelSize, mat);
-            logGroup.add(voxel);
+            const matIndex = r < radius * 0.7 ? 2 : (Math.random() > 0.3 ? 0 : 1);
+            addVoxel(x, y, z, matIndex);
         }
     });
+
+    geometries.forEach((geoArray, index) => {
+        if (geoArray.length > 0) {
+            const mergedGeo = THREE.BufferGeometryUtils.mergeGeometries(geoArray, false);
+            const mesh = new THREE.Mesh(mergedGeo, materials[index]);
+            logGroup.add(mesh);
+        }
+    });
+    
+    voxelGeo.dispose();
+    geometries.forEach(arr => arr.forEach(g => g.dispose()));
 
     logGroup.rotation.y = Math.PI / 2;
     logGroup.position.set(0, 2.7, 1);
